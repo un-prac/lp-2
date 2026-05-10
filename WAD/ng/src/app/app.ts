@@ -7,12 +7,12 @@ import { FormsModule } from '@angular/forms';
   standalone: true,
   imports: [CommonModule, FormsModule],
   template: `
-    <div style="max-width:400px; margin:60px auto; border:1px solid #ccc; padding:20px;">
+    <div class="login-box">
 
-      <div *ngIf="loggedIn" style="text-align:center;">
-        <h3 style="color:green;">Login Successful!</h3>
-        <p>Welcome {{ loginUsername }}</p>
-        <button (click)="logout()">Logout</button>
+      <div *ngIf="loggedIn">
+        <h3 style="color:green; text-align:center;">Login Successful!</h3>
+        <p style="text-align:center;">Welcome {{ loginUsername }}</p>
+        <p style="text-align:center;"><button (click)="logout()">Logout</button></p>
       </div>
 
       <div *ngIf="!loggedIn">

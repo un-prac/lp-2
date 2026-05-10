@@ -26,7 +26,7 @@ function App() {
 
   if(loggedIn) {
     return (
-      <div style={{textAlign:'center', marginTop:'100px'}}>
+      <div className="success-box">
         <h3 style={{color:'green'}}>Login Successful!</h3>
         <p>Welcome Admin</p>
         <button onClick={handleLogout}>Logout</button>
@@ -35,7 +35,7 @@ function App() {
   }
 
   return (
-    <div style={{maxWidth:'350px', margin:'80px auto', border:'1px solid #ccc', padding:'20px'}}>
+    <div className="login-box">
       <h4>Login</h4>
       <hr/>
       <form onSubmit={handleLogin}>
@@ -52,7 +52,7 @@ function App() {
         <button type="submit">Login</button>
       </form>
       {error && <p style={{color:'red'}}>{error}</p>}
-      <p style={{fontSize:'12px', color:'gray'}}>hint: admin / admin</p>
+      <p style={{color:'gray'}}>hint: admin / admin</p>
     </div>
   )
 }

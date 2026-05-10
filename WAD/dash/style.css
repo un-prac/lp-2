@@ -4,6 +4,27 @@ body {
     font-family: Arial, sans-serif;
 }
 
+.sidebar {
+    background-color: #343a40;
+    min-height: 100vh;
+    padding: 20px;
+    color: white;
+}
+
+.sidebar a {
+    color: gray;
+    text-decoration: none;
+}
+
+.sidebar a.active {
+    color: white;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+}
+
 .card {
     margin-bottom: 10px;
 }

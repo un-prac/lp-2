@@ -1,1 +1,14 @@
-/* You can add global styles to this file, and also import other style files */
+/* global styles for angular app */
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+}
+
+.login-box {
+    width: 380px;
+    margin: 60px auto;
+    background-color: white;
+    border: 1px solid #ccc;
+    padding: 20px;
+}
