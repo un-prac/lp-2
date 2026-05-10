@@ -1,35 +1,26 @@
-// login.js - Simple Mock Authentication
-// NOTE: Hardcoding credentials in frontend JS is NOT secure for production.
-// This is for demonstration purposes to show how logic works simply.
+// login page logic
 
-document.getElementById("loginForm").addEventListener("submit", function (e) {
-  e.preventDefault(); // Prevent page refresh
+document.getElementById("loginForm").addEventListener("submit", function(e) {
+    e.preventDefault()
 
-  // Get input values
-  const usernameInput = document.getElementById("username").value;
-  const passwordInput = document.getElementById("password").value;
-  const messageDiv = document.getElementById("message");
+    var uname = document.getElementById("username").value
+    var pwd = document.getElementById("password").value
+    var msg = document.getElementById("message")
 
-  // Mock credentials
-  const validUsername = "admin";
-  const validPassword = "admin";
+    // just using hardcoded values for now
+    if(uname == "admin" && pwd == "admin") {
+        msg.style.color = "green"
+        msg.innerText = "Login successful!"
 
-  // Simple validation
-  if (usernameInput === validUsername && passwordInput === validPassword) {
-    // Success
-    messageDiv.className = "text-center mt-3 text-success small";
-    messageDiv.innerText = "Login successful! Loading...";
+        localStorage.setItem("isLoggedIn", "true")
+        
+        // redirect after 1 second
+        setTimeout(function() {
+            window.location.href = "success.html"
+        }, 1000)
 
-    // Simulate storing a token or session
-    localStorage.setItem("isLoggedIn", "true");
-
-    // Redirect to success page after a short delay
-    setTimeout(() => {
-      window.location.href = "success.html";
-    }, 1000);
-  } else {
-    // Failure
-    messageDiv.className = "text-center mt-3 text-danger small";
-    messageDiv.innerText = "Invalid username or password!";
-  }
-});
+    } else {
+        msg.style.color = "red"
+        msg.innerText = "Wrong username or password!"
+    }
+})

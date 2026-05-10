@@ -7,139 +7,113 @@ import { FormsModule } from '@angular/forms';
   standalone: true,
   imports: [CommonModule, FormsModule],
   template: `
-    <div class="container mt-5">
-      <div class="row justify-content-center">
-        <div class="col-md-6">
-          <div class="card p-4 shadow-sm border-0">
-            
-            <!-- Success View -->
-            <div *ngIf="isLoggedIn">
-              <div class="text-center py-3">
-                <div class="mb-3 text-success">
-                  <!-- Using a simple text checkmark -->
-                  <h1 style="font-size: 4rem;">✓</h1>
-                </div>
-                <h3 class="fw-bold mb-2">Login Successful!</h3>
-                <p class="text-muted mb-4">Welcome back to your account.</p>
-                <div class="d-grid">
-                  <button class="btn btn-primary" (click)="logout()">Logout</button>
-                </div>
-              </div>
-            </div>
+    <div style="max-width:400px; margin:60px auto; border:1px solid #ccc; padding:20px;">
 
-            <!-- Auth Forms -->
-            <div *ngIf="!isLoggedIn">
-              <!-- Login View -->
-              <div *ngIf="isLoginView">
-                <h3 class="fw-bold mb-3">Login</h3>
-                <div class="mb-3">
-                  <label class="form-label">Username</label>
-                  <input type="text" class="form-control" [(ngModel)]="loginData.username" />
-                </div>
-                <div class="mb-3">
-                  <label class="form-label">Password</label>
-                  <input type="password" class="form-control" [(ngModel)]="loginData.password" />
-                </div>
-                <div class="d-grid">
-                  <button class="btn btn-primary" (click)="login()">Login</button>
-                </div>
-                <p class="mt-3 text-center">
-                  Don't have an account? <a href="#" (click)="toggleView($event)">Register</a>
-                </p>
-              </div>
-
-              <!-- Register View -->
-              <div *ngIf="!isLoginView">
-                <h3 class="fw-bold mb-3">Register</h3>
-                <div class="mb-3">
-                  <label class="form-label">Username</label>
-                  <input type="text" class="form-control" [(ngModel)]="registerData.username" />
-                </div>
-                <div class="mb-3">
-                  <label class="form-label">Password</label>
-                  <input type="password" class="form-control" [(ngModel)]="registerData.password" />
-                </div>
-                <div class="d-grid">
-                  <button class="btn btn-success" (click)="register()">Register</button>
-                </div>
-                <p class="mt-3 text-center">
-                  Already have an account? <a href="#" (click)="toggleView($event)">Login</a>
-                </p>
-              </div>
-
-              <!-- Message feedback -->
-              <div class="mt-3 text-center small" [ngClass]="messageClass">{{ message }}</div>
-            </div>
-
-          </div>
-        </div>
+      <div *ngIf="loggedIn" style="text-align:center;">
+        <h3 style="color:green;">Login Successful!</h3>
+        <p>Welcome {{ loginUsername }}</p>
+        <button (click)="logout()">Logout</button>
       </div>
+
+      <div *ngIf="!loggedIn">
+
+        <div *ngIf="showLogin">
+          <h4>Login</h4>
+          <hr>
+          <label>Username:</label><br>
+          <input type="text" [(ngModel)]="loginUsername" /><br><br>
+          <label>Password:</label><br>
+          <input type="password" [(ngModel)]="loginPassword" /><br><br>
+          <button (click)="doLogin()">Login</button>
+          <p *ngIf="msg" style="color:red;">{{ msg }}</p>
+          <br>
+          <p>No account? <a href="#" (click)="switchView($event)">Register here</a></p>
+        </div>
+
+        <div *ngIf="!showLogin">
+          <h4>Register</h4>
+          <hr>
+          <label>Username:</label><br>
+          <input type="text" [(ngModel)]="regUsername" /><br><br>
+          <label>Password:</label><br>
+          <input type="password" [(ngModel)]="regPassword" /><br><br>
+          <button (click)="doRegister()">Register</button>
+          <p *ngIf="msg" [style.color]="msgColor">{{ msg }}</p>
+          <br>
+          <p>Already registered? <a href="#" (click)="switchView($event)">Login</a></p>
+        </div>
+
+      </div>
+
     </div>
   `,
-  styles: [
-    `
-      .container {
-        max-width: 500px;
-      }
-      .btn-primary {
-        background-color: #4f46e5;
-        border-color: #4f46e5;
-      }
-      .btn-success {
-        background-color: #22c55e;
-        border-color: #22c55e;
-      }
-    `,
-  ],
 })
 export class App {
-  isLoginView = true;
-  isLoggedIn = false;
-  loginData = { username: '', password: '' };
-  registerData = { username: '', password: '' };
-  users = [{ username: 'admin', password: 'admin' }];
-  message = '';
-  messageClass = '';
+  showLogin = true;
+  loggedIn = false;
 
-  toggleView(event: Event) {
-    event.preventDefault();
-    this.isLoginView = !this.isLoginView;
-    this.message = '';
+  loginUsername = '';
+  loginPassword = '';
+
+  regUsername = '';
+  regPassword = '';
+
+  msg = '';
+  msgColor = 'red';
+
+  // storing users as array
+  users = [
+    { username: 'admin', password: 'admin' }
+  ];
+
+  switchView(e: Event) {
+    e.preventDefault();
+    this.showLogin = !this.showLogin;
+    this.msg = '';
   }
 
-  register() {
-    const exists = this.users.some((u) => u.username === this.registerData.username);
-    if (exists) {
-      this.message = 'Username already taken!';
-      this.messageClass = 'text-danger';
+  doLogin() {
+    var found = false;
+    for(var i = 0; i < this.users.length; i++) {
+      if(this.users[i].username == this.loginUsername && this.users[i].password == this.loginPassword) {
+        found = true;
+        break;
+      }
+    }
+
+    if(found) {
+      this.loggedIn = true;
+      this.msg = '';
     } else {
-      this.users.push({ ...this.registerData });
-      this.message = 'Registered successfully! You can now login.';
-      this.messageClass = 'text-success';
-      setTimeout(() => {
-        this.isLoginView = true;
-        this.message = '';
-        this.registerData = { username: '', password: '' };
-      }, 1500);
+      this.msg = 'Wrong username or password!';
+      this.msgColor = 'red';
     }
   }
 
-  login() {
-    const user = this.users.find(
-      (u) => u.username === this.loginData.username && u.password === this.loginData.password,
-    );
-    if (user) {
-      this.isLoggedIn = true;
-      this.message = '';
+  doRegister() {
+    var alreadyExists = false;
+    for(var i = 0; i < this.users.length; i++) {
+      if(this.users[i].username == this.regUsername) {
+        alreadyExists = true;
+      }
+    }
+
+    if(alreadyExists) {
+      this.msg = 'Username already taken!';
+      this.msgColor = 'red';
     } else {
-      this.message = 'Invalid username or password!';
-      this.messageClass = 'text-danger';
+      this.users.push({ username: this.regUsername, password: this.regPassword });
+      this.msg = 'Registered! You can now login.';
+      this.msgColor = 'green';
+      this.showLogin = true;
+      this.regUsername = '';
+      this.regPassword = '';
     }
   }
 
   logout() {
-    this.isLoggedIn = false;
-    this.loginData = { username: '', password: '' };
+    this.loggedIn = false;
+    this.loginUsername = '';
+    this.loginPassword = '';
   }
 }
-

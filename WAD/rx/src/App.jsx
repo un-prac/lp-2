@@ -4,97 +4,57 @@ import './App.css'
 function App() {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
-  const [message, setMessage] = useState('')
-  const [messageClass, setMessageClass] = useState('')
+  const [loggedIn, setLoggedIn] = useState(false)
+  const [error, setError] = useState('')
 
-  const handleLogin = (e) => {
-    e.preventDefault();
-    
-    // Mock credentials
-    const validUser = 'admin';
-    const validPass = 'admin';
+  function handleLogin(e) {
+    e.preventDefault()
 
-    if (username === validUser && password === validPass) {
-      setIsLoggedIn(true);
-      setMessage('');
+    if(username == 'admin' && password == 'admin') {
+      setLoggedIn(true)
     } else {
-      setMessage('Invalid username or password!');
-      setMessageClass('text-danger');
+      setError('Wrong username or password!')
     }
   }
 
-  const handleLogout = () => {
-    setIsLoggedIn(false);
-    setUsername('');
-    setPassword('');
-    setMessage('');
+  function handleLogout() {
+    setLoggedIn(false)
+    setUsername('')
+    setPassword('')
+    setError('')
+  }
+
+  if(loggedIn) {
+    return (
+      <div style={{textAlign:'center', marginTop:'100px'}}>
+        <h3 style={{color:'green'}}>Login Successful!</h3>
+        <p>Welcome Admin</p>
+        <button onClick={handleLogout}>Logout</button>
+      </div>
+    )
   }
 
   return (
-    <div className="container mt-5">
-      <div className="row justify-content-center">
-        <div className="col-md-6">
-          <div className="card p-4 shadow-sm border-0">
-            
-            {isLoggedIn ? (
-              <div className="text-center py-3">
-                <div className="mb-3 text-success">
-                  <h1 style={{ fontSize: '4rem' }}>✓</h1>
-                </div>
-                <h3 className="fw-bold mb-2">Login Successful!</h3>
-                <p className="text-muted mb-4">Welcome back to your account.</p>
-                <div className="d-grid">
-                  <button className="btn btn-primary" onClick={handleLogout}>Logout</button>
-                </div>
-              </div>
-            ) : (
-              <div>
-                <h3 className="fw-bold mb-3 text-center">Login</h3>
-                <p className="text-muted text-center mb-4">ReactJS Auth Demo</p>
-                
-                <form onSubmit={handleLogin}>
-                  <div className="mb-3">
-                    <label className="form-label">Username</label>
-                    <input 
-                      type="text" 
-                      className="form-control" 
-                      value={username}
-                      onChange={(e) => setUsername(e.target.value)}
-                      required 
-                    />
-                  </div>
-                  <div className="mb-4">
-                    <label className="form-label">Password</label>
-                    <input 
-                      type="password" 
-                      className="form-control" 
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      required 
-                    />
-                  </div>
-                  <div className="d-grid">
-                    <button type="submit" className="btn btn-primary">Login</button>
-                  </div>
-                </form>
-                
-                {message && (
-                  <div className={`mt-3 text-center small ${messageClass}`}>
-                    {message}
-                  </div>
-                )}
-                
-                <p className="text-center mt-3 small text-muted">Hint: admin / admin</p>
-              </div>
-            )}
-
-          </div>
+    <div style={{maxWidth:'350px', margin:'80px auto', border:'1px solid #ccc', padding:'20px'}}>
+      <h4>Login</h4>
+      <hr/>
+      <form onSubmit={handleLogin}>
+        <div>
+          <label>Username:</label><br/>
+          <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
         </div>
-      </div>
+        <br/>
+        <div>
+          <label>Password:</label><br/>
+          <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+        </div>
+        <br/>
+        <button type="submit">Login</button>
+      </form>
+      {error && <p style={{color:'red'}}>{error}</p>}
+      <p style={{fontSize:'12px', color:'gray'}}>hint: admin / admin</p>
     </div>
   )
 }
 
 export default App
-

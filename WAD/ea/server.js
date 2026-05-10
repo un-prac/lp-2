@@ -1,28 +1,24 @@
-const express = require('express');
-const app = express();
-const PORT = 3001; // Using 3001 to avoid conflict with the previous app if running
+const express = require('express')
+const app = express()
 
-// Middleware to parse form data
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: true }))
+app.use(express.static('public'))
 
-// Serve static files (login form)
-app.use(express.static('public'));
+// hardcoded user for now, will change later maybe
+var user = "admin"
+var pass = "admin"
 
-// Mock credentials
-const validUser = "admin";
-const validPass = "admin";
+app.post('/login', function(req, res) {
+    var uname = req.body.username
+    var pwd = req.body.password
 
-// Handle login POST request
-app.post('/login', (req, res) => {
-    const { username, password } = req.body;
-    
-    if (username === validUser && password === validPass) {
-        res.send("<h1>Login Successful!</h1><p>Welcome back, " + username + ".</p>");
+    if(uname == user && pwd == pass) {
+        res.send("<h1>Login Successful!</h1><p>Welcome " + uname + "</p>")
     } else {
-        res.send("<h1>Login Failed!</h1><p>Invalid username or password.</p><a href='/'>Try again</a>");
+        res.send("<h1>Login Failed</h1><p>Wrong username or password</p><a href='/'>Go back</a>")
     }
-});
+})
 
-app.listen(PORT, () => {
-    console.log(`Server running on http://localhost:${PORT}`);
-});
+app.listen(3001, function() {
+    console.log('app running on http://localhost:3001')
+})

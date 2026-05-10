@@ -1,10 +1,9 @@
-const express = require('express');
-const app = express();
-const PORT = 3000;
+const express = require('express')
+const app = express()
 
-// Serve static files from the 'public' folder
-app.use(express.static('public'));
+// serve files from public folder
+app.use(express.static('public'))
 
-app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
-});
+app.listen(3000, function() {
+    console.log('server started on port 3000')
+})
