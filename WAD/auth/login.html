@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,14 +12,12 @@
 </head>
 <body>
 
-
 <div class="container">
     <div class="row">
         <div class="col-md-4 offset-md-4">
-
+            <br><br>
             <h3>Login Page</h3>
             <hr>
-
             <form id="loginForm">
                 <div>
                     <label>Username:</label><br>
@@ -31,16 +29,34 @@
                     <input type="password" id="password" class="form-control" placeholder="enter password">
                 </div>
                 <br>
-                <button type="submit" class="btn btn-primary">Login</button>
+                <button type="submit" class="btn btn-primary w-100">Login</button>
             </form>
-
             <br>
             <div id="message"></div>
-
         </div>
     </div>
 </div>
 
-<script src="login.js"></script>
+<script>
+    document.getElementById("loginForm").addEventListener("submit", function(e) {
+        e.preventDefault();
+        
+        var uname = document.getElementById("username").value;
+        var pwd = document.getElementById("password").value;
+        var msg = document.getElementById("message");
+
+        if (uname == "admin" && pwd == "admin") {
+            msg.style.color = "green";
+            msg.innerText = "Login successful!";
+            
+            setTimeout(function() {
+                window.location.href = "success.html";
+            }, 1000);
+        } else {
+            msg.style.color = "red";
+            msg.innerText = "Wrong username or password!";
+        }
+    });
+</script>
 </body>
 </html>
